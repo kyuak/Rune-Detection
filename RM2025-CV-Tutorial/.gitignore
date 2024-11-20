@@ -177,3 +177,5 @@ build
 install
 log
 .vscode
+.
+..
