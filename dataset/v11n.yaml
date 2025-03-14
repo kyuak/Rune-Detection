@@ -1,0 +1,16 @@
+train: /localdata/kyuak/RM2025-DatasetUtils/models/rune_test/dataset/train/images
+val: /localdata/kyuak/RM2025-DatasetUtils/models/rune_test/dataset/val/images
+
+# 关键点配置
+kpt_shape: [4, 3]  # 4 个关键点，每个关键点有 3 个值 (x, y, visibility)
+flip_idx: []       # 关键点没有对称性
+
+# 类别数量
+nc: 4
+
+# 类别名称
+names:
+  0: RedInactive
+  1: RedActive
+  2: BlueInactive
+  3: BlueActive
