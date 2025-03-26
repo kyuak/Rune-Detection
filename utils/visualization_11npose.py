@@ -3,9 +3,12 @@ import os
 import numpy as np
 
 # 定义图像和标注文件夹路径
-images_folder = "/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/dataset/images/train"
-labels_folder = "/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/dataset/labels/train"
-output_folder = "/localdata/kyuak/RM2025-DatasetUtils/rune/samples"  # 保存图像的输出文件夹
+images_folder = "/home/ykw/Rune-Detection/dataset/raw_data/rune_official_v1.0/images"
+labels_folder = "/home/ykw/Rune-Detection/dataset/raw_data/rune_official_v1.0/labels"
+output_folder = "/home/ykw/Rune-Detection/utils/samples"  # 保存图像的输出文件夹
+
+DEBUG = True
+number_to_save = 3
 
 # 创建输出文件夹
 os.makedirs(output_folder, exist_ok=True)
@@ -79,13 +82,18 @@ for filename in os.listdir(images_folder):
                     cv2.circle(image, (x, y), 5, color, -1)
                     cv2.putText(image, str(i // 3), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-        # 保存前三张图像
-        if save_count < 3:
-            output_path = os.path.join(output_folder, f"visualization_{save_count + 1}.jpg")
-            cv2.imwrite(output_path, image)
-            print(f"Saved visualization to {output_path}")
-            save_count += 1
+        # 显示图像
+        if DEBUG:
+            cv2.imshow("image", image)
+            cv2.waitKey(2000)
+        else:
+            # 保存前三张图像
+            if save_count < number_to_save:
+                output_path = os.path.join(output_folder, f"visualization_{save_count + 1}.jpg")
+                cv2.imwrite(output_path, image)
+                print(f"Saved visualization to {output_path}")
+                save_count += 1
 
-        # 如果已经保存了三张图像，退出循环
-        if save_count >= 3:
-            break
+            # 如果已经保存了三张图像，退出循环
+            if save_count >= 3:
+                break
