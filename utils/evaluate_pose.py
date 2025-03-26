@@ -6,9 +6,9 @@ from collections import defaultdict
 import cv2
 
 # 配置参数
-TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/test/images"
-TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/test/labels"
-MODEL_PATH = "/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/models/test1/weights/best.pt"
+TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/images"
+TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/labels"
+MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/yolov8s-pose/weights/best.pt"
 CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']  # 只关注类别0和2
 KEYPOINT_NAMES = ['point1', 'point2', 'point3', 'point4']
 CONF_THRESH = 0.8
@@ -122,20 +122,22 @@ def evaluate_keypoints(model, test_img_dir, test_label_dir):
             stats['ar_per_class'][cls_name].append(float(oks > AR_THRESHOLD))
     
     # 计算结果（与原输出格式一致）
+    AP_name = 'AP@' + str(AP_THRESHOLD)
+    AR_name = 'AR@' + str(AR_THRESHOLD)
     metrics = {
         'OKS_mean': np.mean(stats['oks_scores']) if stats['oks_scores'] else 0,
         'OKS_std': np.std(stats['oks_scores']) if stats['oks_scores'] else 0,
-        'AP@0.5': {k: np.mean(v) if v else 0 for k, v in stats['ap_per_class'].items()},
-        'AR@0.1': {k: np.mean(v) if v else 0 for k, v in stats['ar_per_class'].items()}
+        AP_name: {k: np.mean(v) if v else 0 for k, v in stats['ap_per_class'].items()},
+        AR_name: {k: np.mean(v) if v else 0 for k, v in stats['ar_per_class'].items()}
     }
     
     print("\n==== Keypoint Evaluation Metrics ====")
     print(f"Mean OKS: {metrics['OKS_mean']:.4f} ± {metrics['OKS_std']:.4f}")
-    print("\nAP@0.5 per class:")
-    for cls, score in metrics['AP@0.5'].items():
+    print("\n" + AP_name + " per class:")
+    for cls, score in metrics[AP_name].items():
         print(f"{cls:>12}: {score:.4f}")
-    print("\nAR@0.1 per class:")
-    for cls, score in metrics['AR@0.1'].items():
+    print("\n" + AR_name + " per class:")
+    for cls, score in metrics[AR_name].items():
         print(f"{cls:>12}: {score:.4f}")
 
 if __name__ == "__main__":

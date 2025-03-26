@@ -1,7 +1,7 @@
 import os
 
 # 定义图像和标注文件夹路径
-dataset_path = '/localdata/kyuak/Rune-Detection/dataset/raw_data/rune_blender_v0.3'
+dataset_path = '/localdata/kyuak/Rune-Detection/dataset/raw_data/rune_combine_v1.0'
 
 images_folder = dataset_path + '/images'
 labels_folder = dataset_path + '/labels'

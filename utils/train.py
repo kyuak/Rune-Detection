@@ -2,18 +2,22 @@ import torch
 from ultralytics import YOLO
 
 # 加载预训练模型
-model = YOLO("/localdata/kyuak/RM2025-DatasetUtils/yolo11n-pose.pt")
+model_name = "yolo11n-pose"
+model = YOLO("/localdata/kyuak/Rune-Detection/models/" + model_name + ".pt")
 
 # 训练配置
 results = model.train(
-    data="/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/v11n.yaml",
+    data="/localdata/kyuak/Rune-Detection/dataset/v11n.yaml",
     epochs=100,
     batch=16,
     imgsz=640,
     device="0",
-    workers=8,
-    project="/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/models",
-    name="test1",
+    workers=4,
+    project="/localdata/kyuak/Rune-Detection/models",
+    name=model_name,
     exist_ok=True,
-    augment=False,  # 禁用数据增强
+    augment=True,
 )
+
+default_args = model.trainer.args
+print("所有训练参数:\n", vars(default_args))

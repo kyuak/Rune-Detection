@@ -2,13 +2,14 @@ import os
 import numpy as np
 from ultralytics import YOLO
 from collections import defaultdict
+import time
 
 # 配置参数
-TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/test/images"
-TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/test/labels"
-MODEL_PATH = "/localdata/kyuak/RM2025-DatasetUtils/models/rune_test/models/test1/weights/best.pt"
+TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/images"
+TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/labels"
+MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/yolov8s-pose/weights/best.pt"
 CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']
-CONF_THRESH = 0.584  # 根据F1曲线选择的最佳阈值
+CONF_THRESH = 0.063  # 根据F1曲线选择的最佳阈值
 DEBUG = False
 
 def load_true_labels(label_path):
@@ -29,6 +30,7 @@ def evaluate_model(model, test_img_dir, test_label_dir):
         'support': defaultdict(int)
     }
 
+    times = []
     # 遍历测试集
     for img_name in os.listdir(test_img_dir):
         if not img_name.lower().endswith(('.jpg', '.png', '.jpeg')):
@@ -47,7 +49,11 @@ def evaluate_model(model, test_img_dir, test_label_dir):
             stats['support'][cls] += 1
 
         # 模型预测
+        start_time = time.perf_counter()
         results = model.predict(img_path, conf=CONF_THRESH, verbose=False)
+        end_time = time.perf_counter()
+        times.append(end_time - start_time)
+        
         pred_classes = []
         if results[0].boxes:
             pred_classes = results[0].boxes.cls.cpu().numpy().astype(int).tolist()
@@ -96,7 +102,6 @@ def evaluate_model(model, test_img_dir, test_label_dir):
             print(f"\n==== {CLASS_NAMES[cls]} ====")
             print(f"TP: {tp}, FP: {fp}, FN: {fn}, Total: {stats['support'][cls]}")
 
-
         precision = safe_divide(tp, tp + fp)
         recall = safe_divide(tp, tp + fn)
         f1 = safe_divide(2 * precision * recall, precision + recall)
@@ -117,7 +122,19 @@ def evaluate_model(model, test_img_dir, test_label_dir):
     micro_recall = safe_divide(total_tp, total_tp + total_fn)
     micro_f1 = safe_divide(2 * micro_precision * micro_recall, micro_precision + micro_recall)
 
+    # Calculate statistics
+    mean_time = np.mean(times)
+    std_time = np.std(times)
+    min_time = np.min(times)
+    max_time = np.max(times)
+
     # 打印结果
+    print("\n==== Time Statistics ====")
+    print(f"Mean Inference Time: {mean_time:.4f}s")
+    print(f"Std Inference Time:  {std_time:.4f}s")
+    print(f"Min Inference Time:  {min_time:.4f}s")
+    print(f"Max Inference Time:  {max_time:.4f}s")
+
     print("\n==== Class-wise Metrics ====")
     for cls, metrics in class_metrics.items():
         print(f"{CLASS_NAMES[cls]:>12}: "
