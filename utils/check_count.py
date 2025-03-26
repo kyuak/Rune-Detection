@@ -44,5 +44,5 @@ def check_dataset_consistency(dataset_path):
     return is_consistent
 
 # Example usage
-dataset_path = '/home/ykw/Rune-Detection/dataset/raw_data/rune_official_v1.0'
+dataset_path = '/localdata/kyuak/Rune-Detection/dataset/raw_data/rune_blender_v0.3'
 check_dataset_consistency(dataset_path)
