@@ -1,20 +1,24 @@
-train: /localdata/kyuak/Rune-Detection/dataset/split_data/split2/train
-val: /localdata/kyuak/Rune-Detection/dataset/split_data/split2/val
-test: /localdata/kyuak/Rune-Detection/dataset/split_data/split2/test
+train: /localdata/kyuak/Rune-Detection/dataset/split_data/split3/train
+val: /localdata/kyuak/Rune-Detection/dataset/split_data/split3/val
+test: /localdata/kyuak/Rune-Detection/dataset/split_data/split3/test
 
 # 关键点配置
 kpt_shape: [4, 3]  # 4 个关键点，每个关键点有 3 个值 (x, y, visibility)
 flip_idx: []       # 关键点没有对称性
 
 # 类别数量
-nc: 4
+nc: 2
 
 # 类别名称
+# names:
+#   0: RedInactive
+#   1: RedActive
+#   2: BlueInactive
+#   3: BlueActive
+
 names:
-  0: RedInactive
-  1: RedActive
-  2: BlueInactive
-  3: BlueActive
+  0: Inactive
+  1: Active
 
 # 数据增强配置 (可选)
 augment: 

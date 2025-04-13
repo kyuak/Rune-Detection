@@ -3,10 +3,10 @@ import random
 import shutil
 
 # 定义路径
-dataset_path = '/localdata/kyuak/Rune-Detection/dataset/raw_data/rune_combine_v1.0'
+dataset_path = '/localdata/kyuak/Rune-Detection/dataset/raw_data/rune_tianda_v1.0'
 images_folder = dataset_path + '/images'
 labels_folder = dataset_path + '/labels'
-output_folder = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2"  # 输出文件夹
+output_folder = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3"  # 输出文件夹
 
 # 创建输出文件夹
 for split in ["train", "val", "test"]:

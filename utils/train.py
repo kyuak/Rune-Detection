@@ -8,15 +8,15 @@ model = YOLO("/localdata/kyuak/Rune-Detection/models/" + model_name + ".pt")
 # 训练配置
 results = model.train(
     data="/localdata/kyuak/Rune-Detection/dataset/v11n.yaml",
-    epochs=100,
-    batch=16,
+    epochs=150,
+    batch=256,
     imgsz=640,
-    device="0",
-    workers=4,
+    device="4,5,6,7",
+    workers=8,
     project="/localdata/kyuak/Rune-Detection/models",
-    name=model_name,
+    name="tianda1",
     exist_ok=True,
-    augment=True,
+    augment=False,
 )
 
 default_args = model.trainer.args

@@ -6,9 +6,9 @@ from collections import defaultdict
 import cv2
 
 # 配置参数
-TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/images"
-TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/labels"
-MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/yolov8s-pose/weights/best.pt"
+TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/images"
+TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/labels"
+MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/tianda1/weights/best.pt"
 CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']  # 只关注类别0和2
 KEYPOINT_NAMES = ['point1', 'point2', 'point3', 'point4']
 CONF_THRESH = 0.8
