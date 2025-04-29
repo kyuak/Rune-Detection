@@ -5,10 +5,11 @@ from collections import defaultdict
 import time
 
 # 配置参数
-TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/images"
-TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/labels"
-MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/yolov8s-pose/weights/best.pt"
-CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']
+TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/images"
+TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/labels"
+MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/test2/weights/best.pt"
+# CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']
+CLASS_NAMES = ['Inactive', 'Active']
 CONF_THRESH = 0.063  # 根据F1曲线选择的最佳阈值
 DEBUG = False
 
@@ -50,7 +51,8 @@ def evaluate_model(model, test_img_dir, test_label_dir):
 
         # 模型预测
         start_time = time.perf_counter()
-        results = model.predict(img_path, conf=CONF_THRESH, verbose=False)
+        results = model.predict(img_path, device='6', conf=CONF_THRESH, verbose=False)
+        # results = model.predict(img_path, conf=CONF_THRESH, verbose=False)
         end_time = time.perf_counter()
         times.append(end_time - start_time)
         

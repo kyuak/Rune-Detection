@@ -1,22 +1,24 @@
+import sys
+sys.path.insert(0, '/localdata/kyuak/Rune-Detection')
+import ultralytics
 from ultralytics import YOLO
+# print("🚀 正在使用的Ultralytics路径:", ultralytics.__file__)
 
-model = YOLO('C:\Users\ykw\Desktop\Rune-Detection\ultralytics\cfg\models\11\yolo11-pose-v1.0.yaml')  # 你的改过的架构
-model.train(data='/path/to/your/rune.yaml', epochs=100, imgsz=640, optimizer='AdamW', lr0=0.01)
+model = YOLO('/localdata/kyuak/Rune-Detection/dataset/yolo11-pose-v6.0.yaml')
+print("✅ 成功加载模型!")
 
-# 加载预训练模型
-model_name = "yolo11n-pose"
-model = YOLO("/localdata/kyuak/Rune-Detection/models/" + model_name + ".pt")
-
-# 训练配置
 results = model.train(
     data="/localdata/kyuak/Rune-Detection/dataset/v11n.yaml",
     epochs=150,
-    batch=256,
+    batch=128,
     imgsz=640,
-    device="4,5,6,7",
+    amp=False,
+    # optimizer='AdamW',
+    # lr0=0.01,
+    device="1,2,3,4",
     workers=8,
     project="/localdata/kyuak/Rune-Detection/models",
-    name="tianda1",
+    name="test6",
     exist_ok=True,
     augment=False,
 )

@@ -1,7 +1,7 @@
 from ultralytics import YOLO
  
 # 加载一个模型，路径为 YOLO 模型的 .pt 文件
-model = YOLO("/localdata/kyuak/RM2025-DatasetUtils/models/rune_blender/rune_blender+lab_v0.1/weights/best.pt")
+model = YOLO("/localdata/kyuak/Rune-Detection/models/test1/weights/best.pt")
  
 # 导出模型，设置多种参数
 model.export(
