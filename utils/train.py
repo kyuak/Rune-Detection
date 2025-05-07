@@ -14,9 +14,8 @@ results = model.train(
     device="4,5,6,7",
     workers=8,
     project="/localdata/kyuak/Rune-Detection/models",
-    name="tianda1",
+    name="tianda2",
     exist_ok=True,
-    augment=False,
 )
 
 default_args = model.trainer.args

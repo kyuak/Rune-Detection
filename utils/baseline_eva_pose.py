@@ -6,11 +6,10 @@ from collections import defaultdict
 import cv2
 
 # 配置参数
-TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/images"
-TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split3/test/labels"
-MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/test1.5/weights/best.pt"
-# CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']
-CLASS_NAMES = ['Inactive', 'Active']
+TEST_IMAGES_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/images"
+TEST_LABELS_DIR = "/localdata/kyuak/Rune-Detection/dataset/split_data/split2/test/labels"
+MODEL_PATH = "/localdata/kyuak/Rune-Detection/models/yolo11s-pose/weights/best.pt"
+CLASS_NAMES = ['RedInactive', 'RedActive', 'BlueInactive', 'BlueActive']  # 只关注类别0和2
 KEYPOINT_NAMES = ['point1', 'point2', 'point3', 'point4']
 CONF_THRESH = 0.8
 IOU_THRESH = 0.6
@@ -82,7 +81,7 @@ def evaluate_keypoints(model, test_img_dir, test_label_dir):
             continue
             
         # 模型预测（过滤非0/2类别）
-        results = model.predict(img_path, device='7', conf=CONF_THRESH, iou=IOU_THRESH, verbose=False)
+        results = model.predict(img_path, conf=CONF_THRESH, iou=IOU_THRESH, verbose=False)
         pred_objs = []
 
         for result in results:
@@ -140,6 +139,22 @@ def evaluate_keypoints(model, test_img_dir, test_label_dir):
     print("\n" + AR_name + " per class:")
     for cls, score in metrics[AR_name].items():
         print(f"{cls:>12}: {score:.4f}")
+
+    # 合并所有类别的 AP 值
+    all_ap_values = []
+    for v in stats['ap_per_class'].values():
+        all_ap_values.extend(v)
+
+    all_ar_values = []
+    for v in stats['ar_per_class'].values():
+        all_ar_values.extend(v)
+        
+    # 全局平均
+    total_ap = np.mean(all_ap_values) if all_ap_values else 0
+    total_ar = np.mean(all_ar_values) if all_ar_values else 0
+
+    print(f"\nTotal AP: {total_ap:.4f}")
+    print(f"Total AR: {total_ar:.4f}")
 
 if __name__ == "__main__":
     print(f"Loading model from {MODEL_PATH}...")

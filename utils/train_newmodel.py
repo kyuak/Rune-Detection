@@ -4,7 +4,7 @@ import ultralytics
 from ultralytics import YOLO
 # print("🚀 正在使用的Ultralytics路径:", ultralytics.__file__)
 
-model = YOLO('/localdata/kyuak/Rune-Detection/dataset/yolo11-pose-v6.0.yaml')
+model = YOLO('/localdata/kyuak/Rune-Detection/dataset/yolo11-pose-v1.0.yaml')
 print("✅ 成功加载模型!")
 
 results = model.train(
@@ -13,12 +13,14 @@ results = model.train(
     batch=128,
     imgsz=640,
     amp=False,
-    # optimizer='AdamW',
-    # lr0=0.01,
+    optimizer='AdamW',
+    lr0=0.01,
+    # box=4.0, cls=0.2, dfl=1.5, kobj=3.0,
+    # box=7.5, cls=0.5, dfl=1.5, kobj=1.0
     device="1,2,3,4",
     workers=8,
     project="/localdata/kyuak/Rune-Detection/models",
-    name="test6",
+    name="test1.5",
     exist_ok=True,
     augment=False,
 )
