@@ -61,6 +61,7 @@ from .block import (
 )
 from .conv import (
     CBAM,
+    ECA,
     ChannelAttention,
     Concat,
     Conv,
@@ -102,6 +103,7 @@ __all__ = (
     "ChannelAttention",
     "SpatialAttention",
     "CBAM",
+    "ECA",
     "Concat",
     "TransformerLayer",
     "TransformerBlock",
